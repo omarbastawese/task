@@ -1,0 +1,36 @@
+         CLIPS (6.30 3/17/15)
+CLIPS> ;; Define the person template
+(deftemplate person
+   (slot name
+      (type SYMBOL STRING)
+      (cardinality 2 4)) ;; Name must have 2 to 4 items
+   (slot age
+      (type INTEGER)
+      (range 20 25)) ;; Age must be between 20 and 25
+   (slot hair-color
+      (type SYMBOL STRING))) ;; Hair color is symbol or string
+
+;; Define the rule "check_color" to print hair color if not black or brown
+(defrule check_color
+   ?p <- (person (name ?n) (hair-color ?color&~black&~brown))
+   =>
+   (printout t "Person " ?n " has hair color: " ?color crlf))
+
+;; Sample facts to test the rule
+(assert (person (name "Ali Ahmed") (age 22) (hair-color blonde)))
+(assert (person (name "Sara Mahmoud") (age 24) (hair-color red)))
+(assert (person (name "Omar Ali") (age 23) (hair-color black)))
+(assert (person (name "Mona Salem") (age 21) (hair-color brown)))
+
+;; Run the rule engine
+(run)
+
+[CSTRNPSR5] The cardinality attribute can only be used with multifield slots.
+
+ERROR:
+(deftemplate MAIN::person
+   (slot name (type SYMBOL STRING) (cardinality
+CLIPS> Person Ali Ahmed has hair color: blonde
+Person Sara Mahmoud has hair color: red
+Person
+CLIPS> 
